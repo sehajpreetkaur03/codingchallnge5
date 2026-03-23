@@ -7,6 +7,7 @@ import {
 import errorHandler from "./api/v1/middleware/errorHandler";
 import { HTTP_STATUS } from "./constants/httpConstants";
 /** import the routes **/
+import resourceRoutes from "./api/v1/routes/resourceRoutes";
 
 const app: Express = express();
 
@@ -29,6 +30,7 @@ app.get("/api/v1/health", (_req, res) => {
 });
 
 /** Update the api endppoints with appropriate routes **/
+app.use("/api/v1/resources", resourceRoutes);
 
 
 
