@@ -8,11 +8,11 @@ import {
   consoleLogger,
 } from "./api/v1/middleware/logger";
 import errorHandler from "./api/v1/middleware/errorHandler";
-
 import resourceRoutes from "./api/v1/routes/resourceRoutes";
 import { helmetConfig } from "./config/helmetConfig";
 import { corsConfig } from "./config/corsConfig";
 import { swaggerSpec } from "./config/swaggerConfig";
+import { HTTP_STATUS } from "./constants/httpConstants";
 
 dotenv.config();
 
@@ -25,28 +25,27 @@ if (process.env.NODE_ENV === "production") {
   app.use(consoleLogger);
 }
 
-app.use(express.json());
-
-// Helmet security headers
+// Security middleware
 app.use(helmetConfig);
-
-// CORS configuration
 app.use(corsConfig);
 
-// Hide Express signature header
-app.disable("x-powered-by");
+app.use(express.json());
 
-/**
- * Mount all API v1 routes here.
- * Your resourceRoutes file should contain:
- * /health
- * /resources
- * /resources/:id
- */
-app.use("/api/v1", resourceRoutes);
+// Health check endpoint
+app.get("/api/v1/health", (_req, res) => {
+  res.status(HTTP_STATUS.OK).json({
+    status: "OK",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+    version: "1.0.0",
+  });
+});
 
-// Swagger UI
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Resource routes
+app.use("/api/v1/resources", resourceRoutes);
+
+// Swagger UI docs
+app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(errorHandler);
 
