@@ -14,5 +14,6 @@ const router = Router();
  *         description: List of all resources
  */
 router.get("/", resourceController.getAll);
+router.get("/:id", resourceController.getById);
 
 export default router;

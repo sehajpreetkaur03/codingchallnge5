@@ -11,4 +11,7 @@ let nextId = 5;
 
 export const resourceService = {
     getAll: (): Resource[] => resources,
+    getById: (id: number): Resource | null =>
+    resources.find(r => r.id === id) ?? null,
 };
+
