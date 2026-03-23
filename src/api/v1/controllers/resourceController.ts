@@ -23,6 +23,19 @@ export const resourceController = {
         message: "Resource retrieved",
         data: resource,
     });
-    },  
+    },
+    create: (req: Request, res: Response) => {
+    const { title, type, url, description } = req.body;
+    if (!title || !type || !url) {
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+            message: "title, type, and url are required",
+        });
+    }
+    const resource = resourceService.create({ title, type, url, description });
+    res.status(HTTP_STATUS.CREATED).json({
+        message: "Resource created",
+        data: resource,
+    });
+    } ,  
 };
 

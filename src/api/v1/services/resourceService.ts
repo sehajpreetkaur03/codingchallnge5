@@ -14,21 +14,16 @@ let nextId = 5;
 
 export const resourceService = {
     getAll: (): Resource[] => resources,
+    getById: (id: number): Resource | null =>
+    resources.find(r => r.id === id) ?? null,
+    create: (data: Omit<Resource, "id" | "createdAt">): Resource => {
+    const newResource: Resource = {
+        id: nextId++,
+        ...data,
+        createdAt: new Date().toISOString(),
+    };
+    resources.push(newResource);
+    return newResource;
+},
 
-
-        create: (data: Omit<Resource,
-         "id" | "createdAt">):
-          Resource => {     const newResource:
-            Resource = {         
-                id: nextId++, 
-                ...data,        
-                         createdAt: new Date().toISOString(), 
-                            };     
-                            resources.push(newResource);   
-                              return newResource;
-                             },
-
-
-  
 };
-

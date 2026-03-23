@@ -15,5 +15,6 @@ const router = Router();
  */
 router.get("/", resourceController.getAll);
 router.get("/:id", resourceController.getById);
+router.post("/", resourceController.create);
 
 export default router;
